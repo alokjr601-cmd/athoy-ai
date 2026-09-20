@@ -5,48 +5,456 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#080b18">
 <title>Athoy AI — Premium AI Workspace</title>
+
 <style>
-*{box-sizing:border-box} :root{--bg:#070914;--panel:rgba(15,18,36,.74);--text:#f7f7ff;--muted:#9ba3bd;--line:rgba(255,255,255,.09)}
+*{box-sizing:border-box}
+:root{--bg:#070914;--panel:rgba(15,18,36,.74);--text:#f7f7ff;--muted:#9ba3bd;--line:rgba(255,255,255,.09)}
 body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;height:100dvh;overflow:hidden}
-button,textarea{font:inherit}.bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:radial-gradient(circle at 50% 0,rgba(99,102,241,.16),transparent 35%)}
-.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.45;animation:f 12s ease-in-out infinite alternate}.o1{width:340px;height:340px;background:#7c3aed;left:-130px;top:-100px}.o2{width:300px;height:300px;background:#0891b2;right:-110px;top:20%;animation-delay:-4s}.o3{width:260px;height:260px;background:#2563eb;left:35%;bottom:-160px;animation-delay:-8s}@keyframes f{to{transform:translate(70px,45px) scale(1.12)}}
-.splash{position:fixed;inset:0;z-index:50;background:#070914;display:grid;place-items:center;transition:.7s}.splash.hide{opacity:0;visibility:hidden}.sbox{text-align:center}.logo,.mark{display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:#fff;font-weight:900}.logo{width:84px;height:84px;border-radius:25px;margin:auto;box-shadow:0 0 55px #7c3aed88;animation:p 1.8s infinite}.logo b{font-size:35px}.splash h1{margin:20px 0 7px;font-size:30px}.splash p{margin:0;color:#9ba3bd;font-size:13px}.loader{width:150px;height:4px;background:#20243a;border-radius:9px;margin:23px auto;overflow:hidden}.loader i{display:block;width:45%;height:100%;background:linear-gradient(90deg,#8b5cf6,#22d3ee);animation:l 1.3s infinite}@keyframes l{from{transform:translateX(-110%)}to{transform:translateX(340%)}}@keyframes p{50%{transform:scale(1.06)}}
-.app{height:100dvh;display:flex;position:relative}.sidebar{width:275px;margin:14px;padding:16px;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(24px);border-radius:25px;z-index:2}.brand{display:flex;gap:11px;align-items:center;padding:7px 5px 18px}.mark{width:40px;height:40px;border-radius:13px}.brand b{font-size:19px}.brand small{display:block;color:#22d3ee;font-size:10px;margin-top:2px}.new{border:0;border-radius:15px;padding:13px;background:linear-gradient(135deg,#7c3aed,#0891b2);color:white;font-weight:800;cursor:pointer}.section{margin:22px 5px 9px;color:#737b96;font-size:10px;text-transform:uppercase;letter-spacing:1.4px}.chat{padding:11px 12px;border-radius:12px;color:var(--muted);font-size:13px;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chat:hover{background:#8b5cf61f;color:var(--text)}.sideBottom{margin-top:auto;display:grid;gap:7px}.sideBtn,.icon{border:1px solid var(--line);background:transparent;border-radius:12px;padding:11px;color:var(--muted);cursor:pointer}.sideBtn{text-align:left}
-.main{flex:1;min-width:0;display:flex;flex-direction:column;z-index:1}.top{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;border-bottom:1px solid var(--line);backdrop-filter:blur(15px)}.status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}.dot{width:8px;height:8px;background:#34d399;border-radius:50%;box-shadow:0 0 12px #34d399}.topBtns{display:flex;gap:8px}.icon{width:40px;height:40px;padding:0;display:grid;place-items:center}.mobile{display:none}
-.content{flex:1;overflow:auto;padding:45px 7% 35px}.hero{max-width:850px;margin:auto;text-align:center}.aiOrb{width:72px;height:72px;margin:0 auto 20px;border-radius:24px;display:grid;place-items:center;background:conic-gradient(#8b5cf6,#22d3ee,#6366f1,#8b5cf6);animation:s 5s linear infinite;box-shadow:0 0 55px #6366f14d}.aiOrb:after{content:"✦";width:58px;height:58px;display:grid;place-items:center;background:#101328;border-radius:19px;font-size:29px}@keyframes s{to{transform:rotate(360deg)}}h2{font-size:clamp(30px,5vw,50px);margin:0 0 10px;letter-spacing:-2px}.gradient{background:linear-gradient(90deg,#a78bfa,#67e8f9,#c4b5fd);-webkit-background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:590px;margin:0 auto 28px;line-height:1.7}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(18px);border-radius:18px;padding:18px;text-align:left;cursor:pointer;transition:.25s}.card:hover{transform:translateY(-4px)}.card strong{display:block;margin-bottom:7px}.card span{color:var(--muted);font-size:12px;line-height:1.5}
-.messages{max-width:850px;margin:30px auto;display:none}.msg{display:flex;gap:12px;margin:17px 0;animation:in .35s ease}.msg.user{justify-content:flex-end}.avatar{width:34px;height:34px;flex:0 0 34px;border-radius:11px;display:grid;place-items:center;font-size:11px;font-weight:800;background:linear-gradient(135deg,#8b5cf6,#06b6d4)}.bubble{max-width:75%;padding:12px 15px;border:1px solid var(--line);background:var(--panel);border-radius:16px;line-height:1.55;font-size:14px}.user .bubble{background:#7c3aed33}@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.composerWrap{padding:12px 7% 20px}.composer{max-width:850px;margin:auto;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(22px);border-radius:20px;padding:10px}.inputRow{display:flex;align-items:flex-end;gap:8px}textarea{flex:1;resize:none;border:0;outline:0;background:transparent;color:var(--text);padding:10px 7px;min-height:44px;max-height:140px;line-height:1.5}textarea::placeholder{color:#717a96}.toolRow{display:flex;gap:6px;margin-top:3px}.tool{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:10px;padding:7px 10px;font-size:11px;cursor:pointer}.tool.active{color:var(--text);background:#8b5cf61a}.send{width:43px;height:43px;border:0;border-radius:13px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:white;cursor:pointer}.voice.recording{background:#ef444426;color:#fb7185}.footer{text-align:center;color:#626a82;font-size:10px;margin-top:8px}.typing{display:flex;gap:4px}.typing i{width:6px;height:6px;background:#9ba3bd;border-radius:50%;animation:b .8s infinite}.typing i:nth-child(2){animation-delay:.12s}.typing i:nth-child(3){animation-delay:.24s}@keyframes b{50%{transform:translateY(-5px);opacity:.45}}.toast{position:fixed;bottom:95px;left:50%;transform:translate(-50%,20px);opacity:0;background:#151a30;border:1px solid var(--line);padding:10px 15px;border-radius:12px;font-size:12px;transition:.3s;z-index:60}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:850px){.sidebar{display:none}.mobile{display:grid}.top{padding:0 14px}.content{padding:35px 16px 25px}.composerWrap{padding:10px 12px 15px}.cards{grid-template-columns:1fr}.bubble{max-width:84%}.tool{padding:7px 8px}.tool span{display:none}}
+button,textarea{font:inherit}
+.bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:radial-gradient(circle at 50% 0,rgba(99,102,241,.16),transparent 35%)}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.45;animation:f 12s ease-in-out infinite alternate}
+.o1{width:340px;height:340px;background:#7c3aed;left:-130px;top:-100px}
+.o2{width:300px;height:300px;background:#0891b2;right:-110px;top:20%;animation-delay:-4s}
+.o3{width:260px;height:260px;background:#2563eb;left:35%;bottom:-160px;animation-delay:-8s}
+@keyframes f{to{transform:translate(70px,45px) scale(1.12)}}
+
+.splash{position:fixed;inset:0;z-index:50;background:#070914;display:grid;place-items:center;transition:.7s}
+.splash.hide{opacity:0;visibility:hidden}
+.sbox{text-align:center}
+.logo,.mark{display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:#fff;font-weight:900}
+.logo{width:84px;height:84px;border-radius:25px;margin:auto;box-shadow:0 0 55px #7c3aed88;animation:p 1.8s infinite}
+.logo b{font-size:35px}
+.splash h1{margin:20px 0 7px;font-size:30px}
+.splash p{margin:0;color:#9ba3bd;font-size:13px}
+.loader{width:150px;height:4px;background:#20243a;border-radius:9px;margin:23px auto;overflow:hidden}
+.loader i{display:block;width:45%;height:100%;background:linear-gradient(90deg,#8b5cf6,#22d3ee);animation:l 1.3s infinite}
+@keyframes l{from{transform:translateX(-110%)}to{transform:translateX(340%)}}
+@keyframes p{50%{transform:scale(1.06)}}
+
+.app{height:100dvh;display:flex;position:relative}
+.sidebar{width:275px;margin:14px;padding:16px;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(24px);border-radius:25px;z-index:2}
+.brand{display:flex;gap:11px;align-items:center;padding:7px 5px 18px}
+.mark{width:40px;height:40px;border-radius:13px}
+.brand b{font-size:19px}
+.brand small{display:block;color:#22d3ee;font-size:10px;margin-top:2px}
+.new{border:0;border-radius:15px;padding:13px;background:linear-gradient(135deg,#7c3aed,#0891b2);color:white;font-weight:800;cursor:pointer}
+.section{margin:22px 5px 9px;color:#737b96;font-size:10px;text-transform:uppercase;letter-spacing:1.4px}
+.chat{padding:11px 12px;border-radius:12px;color:var(--muted);font-size:13px;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat:hover{background:#8b5cf61f;color:var(--text)}
+.sideBottom{margin-top:auto;display:grid;gap:7px}
+.sideBtn,.icon{border:1px solid var(--line);background:transparent;border-radius:12px;padding:11px;color:var(--muted);cursor:pointer}
+.sideBtn{text-align:left}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column;z-index:1}
+.top{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;border-bottom:1px solid var(--line);backdrop-filter:blur(15px)}
+.status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+.dot{width:8px;height:8px;background:#34d399;border-radius:50%;box-shadow:0 0 12px #34d399}
+.topBtns{display:flex;gap:8px}
+.icon{width:40px;height:40px;padding:0;display:grid;place-items:center}
+.mobile{display:none}
+
+.content{flex:1;overflow:auto;padding:45px 7% 35px}
+.hero{max-width:850px;margin:auto;text-align:center}
+.aiOrb{width:72px;height:72px;margin:0 auto 20px;border-radius:24px;display:grid;place-items:center;background:conic-gradient(#8b5cf6,#22d3ee,#6366f1,#8b5cf6);animation:s 5s linear infinite;box-shadow:0 0 55px #6366f14d}
+.aiOrb:after{content:"✦";width:58px;height:58px;display:grid;place-items:center;background:#101328;border-radius:19px;font-size:29px}
+@keyframes s{to{transform:rotate(360deg)}}
+h2{font-size:clamp(30px,5vw,50px);margin:0 0 10px;letter-spacing:-2px}
+.gradient{background:linear-gradient(90deg,#a78bfa,#67e8f9,#c4b5fd);-webkit-background-clip:text;color:transparent}
+.hero p{color:var(--muted);max-width:590px;margin:0 auto 28px;line-height:1.7}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(18px);border-radius:18px;padding:18px;text-align:left;cursor:pointer;transition:.25s}
+.card:hover{transform:translateY(-4px)}
+.card strong{display:block;margin-bottom:7px}
+.card span{color:var(--muted);font-size:12px;line-height:1.5}
+
+.messages{max-width:850px;margin:30px auto;display:none}
+.msg{display:flex;gap:12px;margin:17px 0;animation:in .35s ease}
+.msg.user{justify-content:flex-end}
+.avatar{width:34px;height:34px;flex:0 0 34px;border-radius:11px;display:grid;place-items:center;font-size:11px;font-weight:800;background:linear-gradient(135deg,#8b5cf6,#06b6d4)}
+.bubble{max-width:75%;padding:12px 15px;border:1px solid var(--line);background:var(--panel);border-radius:16px;line-height:1.55;font-size:14px;white-space:pre-wrap;word-break:break-word}
+.user .bubble{background:#7c3aed33}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.composerWrap{padding:12px 7% 20px}
+.composer{max-width:850px;margin:auto;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(22px);border-radius:20px;padding:10px}
+.inputRow{display:flex;align-items:flex-end;gap:8px}
+textarea{flex:1;resize:none;border:0;outline:0;background:transparent;color:var(--text);padding:10px 7px;min-height:44px;max-height:140px;line-height:1.5}
+textarea::placeholder{color:#717a96}
+.toolRow{display:flex;gap:6px;margin-top:3px}
+.tool{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:10px;padding:7px 10px;font-size:11px;cursor:pointer}
+.tool.active{color:var(--text);background:#8b5cf61a}
+.send{width:43px;height:43px;border:0;border-radius:13px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:white;cursor:pointer}
+.send:disabled{opacity:.5;cursor:not-allowed}
+.voice.recording{background:#ef444426;color:#fb7185}
+.footer{text-align:center;color:#626a82;font-size:10px;margin-top:8px}
+.typing{display:flex;gap:4px}
+.typing i{width:6px;height:6px;background:#9ba3bd;border-radius:50%;animation:b .8s infinite}
+.typing i:nth-child(2){animation-delay:.12s}
+.typing i:nth-child(3){animation-delay:.24s}
+@keyframes b{50%{transform:translateY(-5px);opacity:.45}}
+.toast{position:fixed;bottom:95px;left:50%;transform:translate(-50%,20px);opacity:0;background:#151a30;border:1px solid var(--line);padding:10px 15px;border-radius:12px;font-size:12px;transition:.3s;z-index:60}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:850px){
+.sidebar{display:none}
+.mobile{display:grid}
+.top{padding:0 14px}
+.content{padding:35px 16px 25px}
+.composerWrap{padding:10px 12px 15px}
+.cards{grid-template-columns:1fr}
+.bubble{max-width:84%}
+.tool{padding:7px 8px}
+.tool span{display:none}
+}
 </style>
 </head>
+
 <body>
-<div class="bg"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
-<div class="splash" id="splash"><div class="sbox"><div class="logo"><b>A</b></div><h1>Athoy AI</h1><p>Your intelligent AI workspace</p><div class="loader"><i></i></div></div></div>
+
+<div class="bg">
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+</div>
+
+<div class="splash" id="splash">
+<div class="sbox">
+<div class="logo"><b>A</b></div>
+<h1>Athoy AI</h1>
+<p>Your intelligent AI workspace</p>
+<div class="loader"><i></i></div>
+</div>
+</div>
+
 <div class="app">
+
 <aside class="sidebar">
-<div class="brand"><div class="mark">A</div><div><b>Athoy AI</b><small>INTELLIGENT WORKSPACE</small></div></div>
-<button class="new" onclick="newChat()">＋ New Chat</button><div class="section">Recent chats</div><div id="history"></div>
-<div class="sideBottom"><button class="sideBtn" onclick="showToast('Appearance controls ready')">☼ &nbsp; Appearance</button><button class="sideBtn" onclick="showToast('Settings will connect in the backend phase')">⚙ &nbsp; Settings</button></div>
+
+<div class="brand">
+<div class="mark">A</div>
+<div>
+<b>Athoy AI</b>
+<small>INTELLIGENT WORKSPACE</small>
+</div>
+</div>
+
+<button class="new" onclick="newChat()">＋ New Chat</button>
+
+<div class="section">Recent chats</div>
+<div id="history"></div>
+
+<div class="sideBottom">
+<button class="sideBtn" onclick="showToast('Appearance controls ready')">☼ &nbsp; Appearance</button>
+<button class="sideBtn" onclick="showToast('Settings will connect in the backend phase')">⚙ &nbsp; Settings</button>
+</div>
+
 </aside>
+
 <main class="main">
-<header class="top"><div class="status"><button class="icon mobile" onclick="showToast('Mobile menu')">☰</button><span class="dot"></span>Athoy AI is ready</div><div class="topBtns"><button class="icon" onclick="showToast('Theme control')">☼</button><button class="icon" onclick="showToast('Account features will connect later')">◉</button></div></header>
-<section class="content" id="content"><div class="hero" id="hero"><div class="aiOrb"></div><h2>Welcome to <span class="gradient">Athoy AI</span></h2><p>A premium AI workspace designed for conversation, ideas, research and productivity.</p><div class="cards">
-<div class="card" onclick="promptUse('Explain a difficult topic in a simple way')"><strong>✦ Explain anything</strong><span>Turn complex ideas into simple explanations.</span></div>
-<div class="card" onclick="promptUse('Help me create a professional plan')"><strong>◈ Create & plan</strong><span>Build plans, ideas, outlines and useful content.</span></div>
-<div class="card" onclick="promptUse('Help me write clean code')"><strong>⌘ Code with me</strong><span>Debug, design and improve code step by step.</span></div>
-</div></div><div class="messages" id="messages"></div></section>
-<div class="composerWrap"><div class="composer"><div class="inputRow"><textarea id="input" rows="1" placeholder="Message Athoy AI..." oninput="resizeBox(this)" onkeydown="keySend(event)"></textarea><button class="send" onclick="sendMessage()">➤</button></div><div class="toolRow"><button class="tool" onclick="file.click()">＋ <span>Attach</span></button><button class="tool" onclick="this.classList.toggle('active');showToast('Web mode toggled')">◉ <span>Web</span></button><button class="tool voice" id="voice" onclick="this.classList.toggle('recording');showToast('Voice mode toggled')">♩ <span>Voice</span></button><button class="tool" onclick="showToast('AI tools will connect in backend phase')">✦ <span>AI Tools</span></button></div><input id="file" type="file" hidden onchange="picked(this)"></div><div class="footer">Athoy AI • Premium UI V2 • Real AI API will be added during the backend phase</div></div>
-</main></div><div class="toast" id="toast"></div>
+
+<header class="top">
+<div class="status">
+<button class="icon mobile" onclick="showToast('Mobile menu')">☰</button>
+<span class="dot"></span>
+Athoy AI is ready
+</div>
+
+<div class="topBtns">
+<button class="icon" onclick="showToast('Theme control')">☼</button>
+<button class="icon" onclick="showToast('Account features will connect later')">◉</button>
+</div>
+</header>
+
+<section class="content" id="content">
+
+<div class="hero" id="hero">
+
+<div class="aiOrb"></div>
+
+<h2>Welcome to <span class="gradient">Athoy AI</span></h2>
+
+<p>
+A premium AI workspace designed for conversation, ideas, research and productivity.
+</p>
+
+<div class="cards">
+
+<div class="card" onclick="promptUse('Explain a difficult topic in a simple way')">
+<strong>✦ Explain anything</strong>
+<span>Turn complex ideas into simple explanations.</span>
+</div>
+
+<div class="card" onclick="promptUse('Help me create a professional plan')">
+<strong>◈ Create & plan</strong>
+<span>Build plans, ideas, outlines and useful content.</span>
+</div>
+
+<div class="card" onclick="promptUse('Help me write clean code')">
+<strong>⌘ Code with me</strong>
+<span>Debug, design and improve code step by step.</span>
+</div>
+
+</div>
+</div>
+
+<div class="messages" id="messages"></div>
+
+</section>
+
+<div class="composerWrap">
+
+<div class="composer">
+
+<div class="inputRow">
+
+<textarea
+id="input"
+rows="1"
+placeholder="Message Athoy AI..."
+oninput="resizeBox(this)"
+onkeydown="keySend(event)"
+></textarea>
+
+<button class="send" id="sendButton" onclick="sendMessage()">➤</button>
+
+</div>
+
+<div class="toolRow">
+
+<button class="tool" onclick="file.click()">＋ <span>Attach</span></button>
+
+<button class="tool" onclick="this.classList.toggle('active');showToast('Web mode toggled')">
+◉ <span>Web</span>
+</button>
+
+<button class="tool voice" id="voice" onclick="this.classList.toggle('recording');showToast('Voice mode toggled')">
+♩ <span>Voice</span>
+</button>
+
+<button class="tool" onclick="showToast('AI tools are available through Athoy AI')">
+✦ <span>AI Tools</span>
+</button>
+
+</div>
+
+<input id="file" type="file" hidden onchange="picked(this)">
+
+</div>
+
+<div class="footer">
+Athoy AI • Premium UI V2 • Powered by Gemini
+</div>
+
+</div>
+
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-const input=document.getElementById('input'),messages=document.getElementById('messages'),hero=document.getElementById('hero'),history=document.getElementById('history'),toast=document.getElementById('toast');
-addEventListener('load',()=>setTimeout(()=>document.getElementById('splash').classList.add('hide'),1700));
-function showToast(t){toast.textContent=t;toast.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>toast.classList.remove('show'),2200)}
-function resizeBox(e){e.style.height='auto';e.style.height=Math.min(e.scrollHeight,140)+'px'}
-function keySend(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}}
-function promptUse(t){input.value=t;resizeBox(input);input.focus()}
-function addMsg(t,u){let r=document.createElement('div');r.className='msg '+(u?'user':'');r.innerHTML=(u?'':'<div class="avatar">A</div>')+'<div class="bubble"></div>'+(u?'<div class="avatar">You</div>':'');r.querySelector('.bubble').textContent=t;messages.appendChild(r);document.getElementById('content').scrollTop=99999;return r}
-function sendMessage(){let t=input.value.trim();if(!t)return;hero.style.display='none';messages.style.display='block';addMsg(t,true);input.value='';resizeBox(input);let r=addMsg('',false);r.querySelector('.bubble').innerHTML='<div class="typing"><i></i><i></i><i></i></div>';setTimeout(()=>r.querySelector('.bubble').textContent='This is the Premium UI demo. Real AI responses will be connected when we build the backend and add the API.',1000);let d=document.createElement('div');d.className='chat';d.textContent=t;history.prepend(d)}
-function newChat(){messages.innerHTML='';messages.style.display='none';hero.style.display='block';input.value='';resizeBox(input);showToast('New chat started')}
-function picked(e){if(e.files[0])showToast('Selected: '+e.files[0].name)}
+
+const API_URL = "https://athoy-ai-backend.onrender.com";
+
+const input = document.getElementById("input");
+const messages = document.getElementById("messages");
+const hero = document.getElementById("hero");
+const history = document.getElementById("history");
+const toast = document.getElementById("toast");
+const sendButton = document.getElementById("sendButton");
+
+let chatHistory = [];
+
+addEventListener("load", () => {
+setTimeout(() => {
+document.getElementById("splash").classList.add("hide");
+}, 1700);
+});
+
+function showToast(t){
+toast.textContent = t;
+toast.classList.add("show");
+clearTimeout(window.tt);
+window.tt = setTimeout(() => {
+toast.classList.remove("show");
+},2200);
+}
+
+function resizeBox(e){
+e.style.height="auto";
+e.style.height=Math.min(e.scrollHeight,140)+"px";
+}
+
+function keySend(e){
+if(e.key==="Enter" && !e.shiftKey){
+e.preventDefault();
+sendMessage();
+}
+}
+
+function promptUse(t){
+input.value=t;
+resizeBox(input);
+input.focus();
+}
+
+function addMsg(t,u){
+
+let r=document.createElement("div");
+
+r.className="msg "+(u?"user":"");
+
+r.innerHTML=
+(u?"":"<div class=\"avatar\">A</div>")+
+"<div class=\"bubble\"></div>"+
+(u?"<div class=\"avatar\">You</div>":"");
+
+r.querySelector(".bubble").textContent=t;
+
+messages.appendChild(r);
+
+document.getElementById("content").scrollTop=999999;
+
+return r;
+}
+
+function addHistory(t){
+
+let d=document.createElement("div");
+
+d.className="chat";
+
+d.textContent=t;
+
+history.prepend(d);
+
+}
+
+async function sendMessage(){
+
+let t=input.value.trim();
+
+if(!t)return;
+
+hero.style.display="none";
+messages.style.display="block";
+
+addMsg(t,true);
+
+input.value="";
+resizeBox(input);
+
+sendButton.disabled=true;
+
+let r=addMsg("",false);
+
+r.querySelector(".bubble").innerHTML=
+'<div class="typing"><i></i><i></i><i></i></div>';
+
+try{
+
+const response=await fetch(API_URL+"/api/chat",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+message:t,
+
+history:chatHistory
+
+})
+
+});
+
+let data;
+
+try{
+data=await response.json();
+}catch{
+throw new Error("Backend returned an invalid response.");
+}
+
+if(!response.ok){
+
+let errorMessage=data.detail || data.error || "AI request failed.";
+
+throw new Error(errorMessage);
+}
+
+const reply=
+data.reply ||
+data.response ||
+data.message ||
+data.text ||
+data.output;
+
+if(!reply){
+
+throw new Error("Gemini returned an empty response.");
+}
+
+r.querySelector(".bubble").textContent=reply;
+
+chatHistory.push({
+role:"user",
+content:t
+});
+
+chatHistory.push({
+role:"assistant",
+content:reply
+});
+
+addHistory(t);
+
+}catch(error){
+
+console.error(error);
+
+r.querySelector(".bubble").textContent=
+"দুঃখিত, এই মুহূর্তে AI উত্তর দিতে পারছে না।\n\n"+error.message;
+
+showToast("AI connection error");
+
+}
+
+sendButton.disabled=false;
+
+input.focus();
+
+}
+
+function newChat(){
+
+messages.innerHTML="";
+messages.style.display="none";
+
+hero.style.display="block";
+
+input.value="";
+
+resizeBox(input);
+
+chatHistory=[];
+
+showToast("New chat started");
+
+}
+
+function picked(e){
+
+if(e.files[0]){
+showToast("Selected: "+e.files[0].name);
+}
+
+}
+
 </script>
-</body></html>
+
+</body>
+  </html>
