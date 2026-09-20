@@ -6,17 +6,13 @@
 <meta name="theme-color" content="#080b18">
 <title>Athoy AI — Premium AI Workspace</title>
 
-<!-- Favicon Icon -->
 <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/4lb8n4.jpeg">
 
-<!-- Marked.js -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<!-- Highlight.js -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-<!-- KaTeX -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -1641,7 +1637,8 @@ function toggleVoiceInput(forceState){
 
 
 /* ================================
-   SEND MESSAGE — FIXED
+   SEND MESSAGE
+   FIXED HISTORY FORMAT
 ================================ */
 
 async function sendMessage(){
@@ -1722,28 +1719,27 @@ async function sendMessage(){
     );
 
 
-  /* History */
+  /*
+   * IMPORTANT FIX
+   *
+   * Backend expects:
+   *
+   * parts: ["text"]
+   *
+   * NOT:
+   *
+   * parts: [{text:"text"}]
+   */
 
-  const historyPayload=
+  const historyPayload =
     sessions[currentSessionId]
       .messages
-      .slice(0,-1)
-      .map(m=>({
-
-        role:
-          m.role==="assistant"
-            ? "model"
-            : "user",
-
-        parts:[
-          {
-            text:
-              extractTextFromResponse(
-                m.content
-              )
-          }
+      .slice(0, -1)
+      .map(m => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [
+          extractTextFromResponse(m.content)
         ]
-
       }));
 
 
@@ -1824,11 +1820,7 @@ async function sendMessage(){
     }
 
 
-    /*
-      Get response safely.
-      This prevents:
-      [object Object]
-    */
+    /* Safely get AI response */
 
     const rawReply=
       data?.reply ??
