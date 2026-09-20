@@ -2451,6 +2451,110 @@ removeSelectedImage();
 sendButton.disabled=true;
 
 
+/* ================================
+   ATHOY SPECIAL ANSWERS
+   ONLY FOR SPECIFIC QUESTIONS
+================================ */
+
+const normalizedQuestion =
+userText
+.trim()
+.replace(/[?？!！।]+$/g,"")
+.replace(/\s+/g," ")
+.toLowerCase();
+
+
+/* Question 1:
+   Who created you?
+*/
+
+if(
+normalizedQuestion === "তোমাকে তৈরি করেছে কে"
+){
+
+const reply =
+"ATHOY";
+
+
+appendMessageElement(
+reply,
+false,
+false
+);
+
+
+sessions[currentSessionId]
+.messages
+.push({
+
+role:"assistant",
+
+content:reply
+
+});
+
+
+saveSessionsToStorage();
+
+renderHistoryList();
+
+sendButton.disabled=false;
+
+input.focus();
+
+return;
+
+}
+
+
+/* Question 2:
+   Tell me about ATHOY
+*/
+
+if(
+normalizedQuestion === "athoy সম্পর্কে বলো"
+){
+
+const reply =
+`ATHOY
+
+জন্ম তারিখ: 1-11-2007
+ঠিকানা: MONGLA, BAGERHAT, BANGLADESH
+Father's Name: PROSANTO KUMAR BAIRAGI
+Mother's Name: RASHIKA RANI BAIRAGI`;
+
+
+appendMessageElement(
+reply,
+false,
+false
+);
+
+
+sessions[currentSessionId]
+.messages
+.push({
+
+role:"assistant",
+
+content:reply
+
+});
+
+
+saveSessionsToStorage();
+
+renderHistoryList();
+
+sendButton.disabled=false;
+
+input.focus();
+
+return;
+
+}
+
+
 /* Typing */
 
 let typingMsgElement =
@@ -2798,4 +2902,4 @@ e.files[0].name
 </script>
 
 </body>
-  </html>
+   </html>
