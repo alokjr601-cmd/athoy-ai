@@ -6,6 +6,21 @@
 <meta name="theme-color" content="#080b18">
 <title>Athoy AI — Premium AI Workspace</title>
 
+<!-- Favicon Icon -->
+<link rel="icon" type="image/jpeg" href="https://files.catbox.moe/4lb8n4.jpeg">
+
+<!-- Marked.js for Markdown parsing -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<!-- Highlight.js for Code Syntax Highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<!-- KaTeX for LaTeX Math Rendering -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
 <style>
 *{box-sizing:border-box}
 :root{--bg:#070914;--panel:rgba(15,18,36,.74);--text:#f7f7ff;--muted:#9ba3bd;--line:rgba(255,255,255,.09)}
@@ -22,27 +37,34 @@ button,textarea{font:inherit}
 .splash.hide{opacity:0;visibility:hidden}
 .sbox{text-align:center}
 .logo,.mark{display:grid;place-items:center;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:#fff;font-weight:900}
-.logo{width:84px;height:84px;border-radius:25px;margin:auto;box-shadow:0 0 55px #7c3aed88;animation:p 1.8s infinite}
-.logo b{font-size:35px}
+.logo{width:84px;height:84px;border-radius:25px;margin:auto;box-shadow:0 0 55px #7c3aed88;animation:p 1.8s infinite;object-fit:cover}
 .splash h1{margin:20px 0 7px;font-size:30px}
 .splash p{margin:0;color:#9ba3bd;font-size:13px}
-.loader{width:150px;height:4px;background:#20243a;border-radius:9px;margin:23px auto;overflow:hidden}
+.loader{width:150px;height:4px;background:#20243a;border-radius:99px;margin:23px auto;overflow:hidden}
 .loader i{display:block;width:45%;height:100%;background:linear-gradient(90deg,#8b5cf6,#22d3ee);animation:l 1.3s infinite}
 @keyframes l{from{transform:translateX(-110%)}to{transform:translateX(340%)}}
 @keyframes p{50%{transform:scale(1.06)}}
 
 .app{height:100dvh;display:flex;position:relative}
-.sidebar{width:275px;margin:14px;padding:16px;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(24px);border-radius:25px;z-index:2}
+.sidebar{width:275px;margin:14px;padding:16px;display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(24px);border-radius:25px;z-index:2;transition:transform .3s ease}
 .brand{display:flex;gap:11px;align-items:center;padding:7px 5px 18px}
-.mark{width:40px;height:40px;border-radius:13px}
+.mark{width:40px;height:40px;border-radius:13px;object-fit:cover}
 .brand b{font-size:19px}
 .brand small{display:block;color:#22d3ee;font-size:10px;margin-top:2px}
-.new{border:0;border-radius:15px;padding:13px;background:linear-gradient(135deg,#7c3aed,#0891b2);color:white;font-weight:800;cursor:pointer}
+.new{border:0;border-radius:15px;padding:13px;background:linear-gradient(135deg,#7c3aed,#0891b2);color:white;font-weight:800;cursor:pointer;transition:opacity .2s}
+.new:hover{opacity:0.9}
 .section{margin:22px 5px 9px;color:#737b96;font-size:10px;text-transform:uppercase;letter-spacing:1.4px}
-.chat{padding:11px 12px;border-radius:12px;color:var(--muted);font-size:13px;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chat:hover{background:#8b5cf61f;color:var(--text)}
-.sideBottom{margin-top:auto;display:grid;gap:7px}
-.sideBtn,.icon{border:1px solid var(--line);background:transparent;border-radius:12px;padding:11px;color:var(--muted);cursor:pointer}
+.chat-list{flex:1;overflow-y:auto;margin-right:-8px;padding-right:8px}
+.chat-list::-webkit-scrollbar{width:4px}
+.chat-list::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+.chat{padding:11px 12px;border-radius:12px;color:var(--muted);font-size:13px;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:.2s}
+.chat:hover,.chat.active{background:#8b5cf61f;color:var(--text)}
+.chat .del-btn{display:none;background:none;border:none;color:#ef4444;cursor:pointer;font-size:12px;padding:2px 6px;border-radius:6px}
+.chat:hover .del-btn{display:block}
+.chat .del-btn:hover{background:#ef444422}
+.sideBottom{margin-top:auto;display:grid;gap:7px;padding-top:10px}
+.sideBtn,.icon{border:1px solid var(--line);background:transparent;border-radius:12px;padding:11px;color:var(--muted);cursor:pointer;transition:.2s}
+.sideBtn:hover,.icon:hover{background:rgba(255,255,255,.05);color:var(--text)}
 .sideBtn{text-align:left}
 
 .main{flex:1;min-width:0;display:flex;flex-direction:column;z-index:1}
@@ -53,7 +75,7 @@ button,textarea{font:inherit}
 .icon{width:40px;height:40px;padding:0;display:grid;place-items:center}
 .mobile{display:none}
 
-.content{flex:1;overflow:auto;padding:45px 7% 35px}
+.content{flex:1;overflow:auto;padding:45px 7% 35px;scroll-behavior:smooth}
 .hero{max-width:850px;margin:auto;text-align:center}
 .aiOrb{width:72px;height:72px;margin:0 auto 20px;border-radius:24px;display:grid;place-items:center;background:conic-gradient(#8b5cf6,#22d3ee,#6366f1,#8b5cf6);animation:s 5s linear infinite;box-shadow:0 0 55px #6366f14d}
 .aiOrb:after{content:"✦";width:58px;height:58px;display:grid;place-items:center;background:#101328;border-radius:19px;font-size:29px}
@@ -63,46 +85,73 @@ h2{font-size:clamp(30px,5vw,50px);margin:0 0 10px;letter-spacing:-2px}
 .hero p{color:var(--muted);max-width:590px;margin:0 auto 28px;line-height:1.7}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .card{border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(18px);border-radius:18px;padding:18px;text-align:left;cursor:pointer;transition:.25s}
-.card:hover{transform:translateY(-4px)}
+.card:hover{transform:translateY(-4px);border-color:rgba(139,92,246,.4)}
 .card strong{display:block;margin-bottom:7px}
 .card span{color:var(--muted);font-size:12px;line-height:1.5}
 
-.messages{max-width:850px;margin:30px auto;display:none}
-.msg{display:flex;gap:12px;margin:17px 0;animation:in .35s ease}
+.messages{max-width:850px;margin:10px auto;display:none}
+.msg{display:flex;gap:12px;margin:20px 0;animation:in .35s ease}
 .msg.user{justify-content:flex-end}
 .avatar{width:34px;height:34px;flex:0 0 34px;border-radius:11px;display:grid;place-items:center;font-size:11px;font-weight:800;background:linear-gradient(135deg,#8b5cf6,#06b6d4)}
-.bubble{max-width:75%;padding:12px 15px;border:1px solid var(--line);background:var(--panel);border-radius:16px;line-height:1.55;font-size:14px;white-space:pre-wrap;word-break:break-word}
-.user .bubble{background:#7c3aed33}
-@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.avatar-img{width:34px;height:34px;flex:0 0 34px;border-radius:11px;object-fit:cover}
+.bubble{max-width:82%;padding:14px 18px;border:1px solid var(--line);background:var(--panel);border-radius:16px;line-height:1.6;font-size:14.5px;word-break:break-word;overflow-x:auto}
+.user .bubble{background:rgba(124,58,237,.2);border-color:rgba(124,58,237,.3)}
+
+/* Markdown & Code Block Styling */
+.bubble p{margin:0 0 10px}
+.bubble p:last-child{margin:0}
+.bubble pre{margin:12px 0;background:#0d1117;border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto;position:relative}
+.bubble code{font-family:'Fira Code',Consolas,Monaco,monospace;font-size:13px}
+.bubble p code, .bubble li code{background:rgba(255,255,255,.1);padding:2px 6px;border-radius:4px}
+.bubble table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
+.bubble th, .bubble td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+.bubble th{background:rgba(255,255,255,.05)}
+.bubble blockquote{border-left:3px solid #8b5cf6;margin:10px 0;padding-left:12px;color:var(--muted)}
+.bubble ul, .bubble ol{margin:6px 0 10px;padding-left:20px}
+.code-header{display:flex;justify-content:space-between;align-items:center;background:#161b22;padding:6px 12px;border-radius:8px 8px 0 0;margin:-12px -12px 10px;border-bottom:1px solid var(--line);font-size:11px;color:var(--muted)}
+.copy-btn{background:transparent;border:1px solid var(--line);color:var(--muted);padding:3px 8px;border-radius:6px;cursor:pointer;font-size:11px}
+.copy-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+
+.img-preview-container{display:none;gap:10px;margin-top:10px;align-items:center}
+.img-preview{width:50px;height:50px;border-radius:8px;object-fit:cover;border:1px solid var(--line)}
+.remove-img{background:#ef4444;color:white;border:none;border-radius:50%;width:18px;height:18px;cursor:pointer;font-size:10px;display:grid;place-items:center}
+
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{transform:none}}
 
 .composerWrap{padding:12px 7% 20px}
 .composer{max-width:850px;margin:auto;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(22px);border-radius:20px;padding:10px}
 .inputRow{display:flex;align-items:flex-end;gap:8px}
 textarea{flex:1;resize:none;border:0;outline:0;background:transparent;color:var(--text);padding:10px 7px;min-height:44px;max-height:140px;line-height:1.5}
 textarea::placeholder{color:#717a96}
-.toolRow{display:flex;gap:6px;margin-top:3px}
-.tool{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:10px;padding:7px 10px;font-size:11px;cursor:pointer}
-.tool.active{color:var(--text);background:#8b5cf61a}
-.send{width:43px;height:43px;border:0;border-radius:13px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:white;cursor:pointer}
+.toolRow{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.tool{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:10px;padding:7px 10px;font-size:11px;cursor:pointer;transition:.2s}
+.tool:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.tool.active{color:var(--text);background:#8b5cf62a;border-color:#8b5cf688}
+.send{width:43px;height:43px;border:0;border-radius:13px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);color:white;cursor:pointer;transition:opacity .2s;flex-shrink:0}
 .send:disabled{opacity:.5;cursor:not-allowed}
-.voice.recording{background:#ef444426;color:#fb7185}
+.voice.recording{background:#ef444426;color:#fb7185;border-color:#ef444488;animation:pulse-red 1.5s infinite}
+@keyframes pulse-red{0%,100%{opacity:1}50%{opacity:.5}}
 .footer{text-align:center;color:#626a82;font-size:10px;margin-top:8px}
-.typing{display:flex;gap:4px}
+.typing{display:flex;gap:4px;padding:4px 0}
 .typing i{width:6px;height:6px;background:#9ba3bd;border-radius:50%;animation:b .8s infinite}
 .typing i:nth-child(2){animation-delay:.12s}
 .typing i:nth-child(3){animation-delay:.24s}
 @keyframes b{50%{transform:translateY(-5px);opacity:.45}}
-.toast{position:fixed;bottom:95px;left:50%;transform:translate(-50%,20px);opacity:0;background:#151a30;border:1px solid var(--line);padding:10px 15px;border-radius:12px;font-size:12px;transition:.3s;z-index:60}
+.toast{position:fixed;bottom:95px;left:50%;transform:translate(-50%,20px);opacity:0;background:#151a30;border:1px solid var(--line);padding:10px 15px;border-radius:12px;font-size:12px;transition:.3s;z-index:60;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);z-index:1}
+
 @media(max-width:850px){
-.sidebar{display:none}
+.sidebar{position:fixed;top:0;bottom:0;left:-295px;margin:0;border-radius:0;z-index:100;height:100dvh}
+.sidebar.open{transform:translateX(295px)}
+.sidebar-overlay.open{display:block}
 .mobile{display:grid}
 .top{padding:0 14px}
 .content{padding:35px 16px 25px}
 .composerWrap{padding:10px 12px 15px}
 .cards{grid-template-columns:1fr}
-.bubble{max-width:84%}
+.bubble{max-width:88%}
 .tool{padding:7px 8px}
 .tool span{display:none}
 }
@@ -119,19 +168,21 @@ textarea::placeholder{color:#717a96}
 
 <div class="splash" id="splash">
 <div class="sbox">
-<div class="logo"><b>A</b></div>
+<img src="https://files.catbox.moe/4lb8n4.jpeg" alt="Athoy AI Logo" class="logo">
 <h1>Athoy AI</h1>
 <p>Your intelligent AI workspace</p>
 <div class="loader"><i></i></div>
 </div>
 </div>
 
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+
 <div class="app">
 
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
 
 <div class="brand">
-<div class="mark">A</div>
+<img src="https://files.catbox.moe/4lb8n4.jpeg" alt="Athoy AI Logo" class="mark">
 <div>
 <b>Athoy AI</b>
 <small>INTELLIGENT WORKSPACE</small>
@@ -141,11 +192,12 @@ textarea::placeholder{color:#717a96}
 <button class="new" onclick="newChat()">＋ New Chat</button>
 
 <div class="section">Recent chats</div>
-<div id="history"></div>
+<div class="chat-list" id="history"></div>
 
 <div class="sideBottom">
+<button class="sideBtn" onclick="clearAllHistory()">🗑 &nbsp; Clear History</button>
 <button class="sideBtn" onclick="showToast('Appearance controls ready')">☼ &nbsp; Appearance</button>
-<button class="sideBtn" onclick="showToast('Settings will connect in the backend phase')">⚙ &nbsp; Settings</button>
+<button class="sideBtn" onclick="showToast('Settings connected')">⚙ &nbsp; Settings</button>
 </div>
 
 </aside>
@@ -154,14 +206,14 @@ textarea::placeholder{color:#717a96}
 
 <header class="top">
 <div class="status">
-<button class="icon mobile" onclick="showToast('Mobile menu')">☰</button>
+<button class="icon mobile" onclick="toggleMobileSidebar()">☰</button>
 <span class="dot"></span>
 Athoy AI is ready
 </div>
 
 <div class="topBtns">
 <button class="icon" onclick="showToast('Theme control')">☼</button>
-<button class="icon" onclick="showToast('Account features will connect later')">◉</button>
+<button class="icon" onclick="showToast('Account active')">◉</button>
 </div>
 </header>
 
@@ -179,17 +231,17 @@ A premium AI workspace designed for conversation, ideas, research and productivi
 
 <div class="cards">
 
-<div class="card" onclick="promptUse('Explain a difficult topic in a simple way')">
+<div class="card" onclick="promptUse('Explain quantum computing in standard terms with key principles.')">
 <strong>✦ Explain anything</strong>
 <span>Turn complex ideas into simple explanations.</span>
 </div>
 
-<div class="card" onclick="promptUse('Help me create a professional plan')">
+<div class="card" onclick="promptUse('Help me create a comprehensive 30-day product launch strategy.')">
 <strong>◈ Create & plan</strong>
 <span>Build plans, ideas, outlines and useful content.</span>
 </div>
 
-<div class="card" onclick="promptUse('Help me write clean code')">
+<div class="card" onclick="promptUse('Write a clean JavaScript function to handle API retries with exponential backoff.')">
 <strong>⌘ Code with me</strong>
 <span>Debug, design and improve code step by step.</span>
 </div>
@@ -219,25 +271,32 @@ onkeydown="keySend(event)"
 
 </div>
 
+<!-- Preview image thumbnail -->
+<div class="img-preview-container" id="imgPreviewContainer">
+  <img id="imgPreview" class="img-preview" src="" alt="Preview">
+  <button class="remove-img" onclick="removeSelectedImage()">✕</button>
+  <span style="font-size: 11px; color: var(--muted);" id="imgName"></span>
+</div>
+
 <div class="toolRow">
 
-<button class="tool" onclick="file.click()">＋ <span>Attach</span></button>
+<button class="tool" onclick="fileInput.click()">＋ <span>Attach</span></button>
 
-<button class="tool" onclick="this.classList.toggle('active');showToast('Web mode toggled')">
+<button class="tool" id="webTool" onclick="toggleWebSearch()">
 ◉ <span>Web</span>
 </button>
 
-<button class="tool voice" id="voice" onclick="this.classList.toggle('recording');showToast('Voice mode toggled')">
+<button class="tool voice" id="voiceBtn" onclick="toggleVoiceInput()">
 ♩ <span>Voice</span>
 </button>
 
-<button class="tool" onclick="showToast('AI tools are available through Athoy AI')">
+<button class="tool" onclick="showToast('AI tools active')">
 ✦ <span>AI Tools</span>
 </button>
 
 </div>
 
-<input id="file" type="file" hidden onchange="picked(this)">
+<input id="fileInput" type="file" accept="image/*" hidden onchange="handleFileSelect(this)">
 
 </div>
 
@@ -253,207 +312,453 @@ Athoy AI • Premium UI V2 • Powered by Gemini
 <div class="toast" id="toast"></div>
 
 <script>
-
 const API_URL = "https://athoy-ai-backend.onrender.com";
 
 const input = document.getElementById("input");
 const messages = document.getElementById("messages");
 const hero = document.getElementById("hero");
-const history = document.getElementById("history");
+const historyContainer = document.getElementById("history");
 const toast = document.getElementById("toast");
 const sendButton = document.getElementById("sendButton");
+const fileInput = document.getElementById("fileInput");
+const imgPreviewContainer = document.getElementById("imgPreviewContainer");
+const imgPreview = document.getElementById("imgPreview");
+const imgName = document.getElementById("imgName");
+const webToolBtn = document.getElementById("webTool");
 
-let chatHistory = [];
+let sessions = {};
+let currentSessionId = null;
+let activeBase64Image = null;
+let isWebSearchActive = false;
+let recognition = null;
+let isListening = false;
+
+// Configure Marked JS options
+marked.setOptions({
+  highlight: function(code, lang) {
+    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+    return hljs.highlight(code, { language }).value;
+  },
+  breaks: true
+});
 
 addEventListener("load", () => {
-setTimeout(() => {
-document.getElementById("splash").classList.add("hide");
-}, 1700);
+  setTimeout(() => {
+    document.getElementById("splash").classList.add("hide");
+  }, 1200);
+  
+  loadSessionsFromStorage();
+  initSpeechRecognition();
 });
 
 function showToast(t){
-toast.textContent = t;
-toast.classList.add("show");
-clearTimeout(window.tt);
-window.tt = setTimeout(() => {
-toast.classList.remove("show");
-},2200);
+  toast.textContent = t;
+  toast.classList.add("show");
+  clearTimeout(window.tt);
+  window.tt = setTimeout(() => {
+    toast.classList.remove("show");
+  },2200);
 }
 
 function resizeBox(e){
-e.style.height="auto";
-e.style.height=Math.min(e.scrollHeight,140)+"px";
+  e.style.height="auto";
+  e.style.height=Math.min(e.scrollHeight,140)+"px";
 }
 
 function keySend(e){
-if(e.key==="Enter" && !e.shiftKey){
-e.preventDefault();
-sendMessage();
-}
+  if(e.key==="Enter" && !e.shiftKey){
+    e.preventDefault();
+    sendMessage();
+  }
 }
 
 function promptUse(t){
-input.value=t;
-resizeBox(input);
-input.focus();
+  input.value=t;
+  resizeBox(input);
+  input.focus();
 }
 
-function addMsg(t,u){
-
-let r=document.createElement("div");
-
-r.className="msg "+(u?"user":"");
-
-r.innerHTML=
-(u?"":"<div class=\"avatar\">A</div>")+
-"<div class=\"bubble\"></div>"+
-(u?"<div class=\"avatar\">You</div>":"");
-
-r.querySelector(".bubble").textContent=t;
-
-messages.appendChild(r);
-
-document.getElementById("content").scrollTop=999999;
-
-return r;
+function toggleMobileSidebar(){
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("sidebarOverlay").classList.toggle("open");
 }
 
-function addHistory(t){
-
-let d=document.createElement("div");
-
-d.className="chat";
-
-d.textContent=t;
-
-history.prepend(d);
-
+/* LocalStorage Session Management */
+function loadSessionsFromStorage(){
+  const saved = localStorage.getItem("athoy_ai_sessions");
+  if(saved){
+    try {
+      sessions = JSON.parse(saved);
+      renderHistoryList();
+    } catch(e) {
+      sessions = {};
+    }
+  }
 }
 
+function saveSessionsToStorage(){
+  localStorage.setItem("athoy_ai_sessions", JSON.stringify(sessions));
+}
+
+function createNewSession(){
+  const id = "session_" + Date.now();
+  sessions[id] = {
+    id: id,
+    title: "New Conversation",
+    messages: []
+  };
+  currentSessionId = id;
+  return id;
+}
+
+function renderHistoryList(){
+  historyContainer.innerHTML = "";
+  const sortedIds = Object.keys(sessions).sort((a,b) => sessions[b].id.localeCompare(sessions[a].id));
+  
+  sortedIds.forEach(id => {
+    const sess = sessions[id];
+    let d = document.createElement("div");
+    d.className = "chat " + (id === currentSessionId ? "active" : "");
+    
+    let titleSpan = document.createElement("span");
+    titleSpan.style.overflow = "hidden";
+    titleSpan.style.textOverflow = "ellipsis";
+    titleSpan.textContent = sess.title;
+    
+    let delBtn = document.createElement("button");
+    delBtn.className = "del-btn";
+    delBtn.textContent = "✕";
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
+      deleteSession(id);
+    };
+
+    d.appendChild(titleSpan);
+    d.appendChild(delBtn);
+    d.onclick = () => switchSession(id);
+    
+    historyContainer.appendChild(d);
+  });
+}
+
+function switchSession(id){
+  currentSessionId = id;
+  renderHistoryList();
+  renderCurrentSessionMessages();
+  
+  // Close sidebar on mobile
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("sidebarOverlay").classList.remove("open");
+}
+
+function deleteSession(id){
+  delete sessions[id];
+  if(currentSessionId === id){
+    currentSessionId = null;
+    newChat();
+  } else {
+    saveSessionsToStorage();
+    renderHistoryList();
+  }
+  showToast("Chat deleted");
+}
+
+function clearAllHistory(){
+  if(confirm("Are you sure you want to clear all chat history?")){
+    sessions = {};
+    currentSessionId = null;
+    saveSessionsToStorage();
+    newChat();
+    showToast("History cleared");
+  }
+}
+
+function renderCurrentSessionMessages(){
+  messages.innerHTML = "";
+  if(!currentSessionId || !sessions[currentSessionId] || sessions[currentSessionId].messages.length === 0){
+    hero.style.display = "block";
+    messages.style.display = "none";
+    return;
+  }
+  
+  hero.style.display = "none";
+  messages.style.display = "block";
+  
+  sessions[currentSessionId].messages.forEach(msg => {
+    appendMessageElement(msg.content, msg.role === "user", false, msg.image);
+  });
+  
+  document.getElementById("content").scrollTop = 999999;
+}
+
+/* UI Formatting Helpers */
+function appendMessageElement(content, isUser, isTyping = false, imageSrc = null){
+  let r = document.createElement("div");
+  r.className = "msg " + (isUser ? "user" : "");
+
+  let avatarHTML = isUser ? '<div class="avatar">You</div>' : '<img src="https://files.catbox.moe/4lb8n4.jpeg" alt="AI Avatar" class="avatar-img">';
+  let bubbleHTML = '<div class="bubble"></div>';
+
+  r.innerHTML = isUser ? (bubbleHTML + avatarHTML) : (avatarHTML + bubbleHTML);
+  let bubble = r.querySelector(".bubble");
+
+  if(isTyping){
+    bubble.innerHTML = '<div class="typing"><i></i><i></i><i></i></div>';
+  } else {
+    if(imageSrc){
+      let img = document.createElement("img");
+      img.src = imageSrc;
+      img.style.maxWidth = "100%";
+      img.style.maxHeight = "250px";
+      img.style.borderRadius = "10px";
+      img.style.marginBottom = "10px";
+      img.style.display = "block";
+      bubble.appendChild(img);
+    }
+    
+    if(isUser){
+      let textNode = document.createElement("div");
+      textNode.textContent = content;
+      bubble.appendChild(textNode);
+    } else {
+      let parsedContainer = document.createElement("div");
+      parsedContainer.innerHTML = marked.parse(content);
+      bubble.appendChild(parsedContainer);
+      
+      // Process Code Blocks (Add Header & Copy Button)
+      parsedContainer.querySelectorAll("pre code").forEach((codeBlock) => {
+        const pre = codeBlock.parentElement;
+        const lang = codeBlock.className.replace("language-", "") || "code";
+        
+        const header = document.createElement("div");
+        header.className = "code-header";
+        header.innerHTML = `<span>${lang}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>`;
+        
+        pre.insertBefore(header, codeBlock);
+      });
+
+      // Render KaTeX Formulas
+      renderMathInElement(parsedContainer, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true}
+        ],
+        throwOnError: false
+      });
+    }
+  }
+
+  messages.appendChild(r);
+  document.getElementById("content").scrollTop = 999999;
+  return r;
+}
+
+function copyCode(button){
+  const pre = button.closest("pre");
+  const code = pre.querySelector("code").innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    button.textContent = "Copied!";
+    setTimeout(() => button.textContent = "Copy", 2000);
+  });
+}
+
+/* Image Attachment Handling */
+function handleFileSelect(inputElement){
+  const file = inputElement.files[0];
+  if(file){
+    if(!file.type.startsWith('image/')){
+      showToast('Please select an image file');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e){
+      activeBase64Image = e.target.result;
+      imgPreview.src = activeBase64Image;
+      imgName.textContent = file.name;
+      imgPreviewContainer.style.display = 'flex';
+      showToast('Image attached');
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function removeSelectedImage(){
+  activeBase64Image = null;
+  fileInput.value = '';
+  imgPreviewContainer.style.display = 'none';
+}
+
+/* Web Search Toggle */
+function toggleWebSearch(){
+  isWebSearchActive = !isWebSearchActive;
+  webToolBtn.classList.toggle('active', isWebSearchActive);
+  showToast(isWebSearchActive ? 'Web Search Enabled' : 'Web Search Disabled');
+}
+
+/* Voice Input (Speech Recognition) */
+function initSpeechRecognition(){
+  if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window){
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      input.value += (input.value ? ' ' : '') + transcript;
+      resizeBox(input);
+      toggleVoiceInput(false);
+    };
+
+    recognition.onerror = () => {
+      toggleVoiceInput(false);
+      showToast("Voice input failed or denied");
+    };
+
+    recognition.onend = () => {
+      toggleVoiceInput(false);
+    };
+  }
+}
+
+function toggleVoiceInput(forceState){
+  const voiceBtn = document.getElementById("voiceBtn");
+  if(!recognition){
+    showToast("Speech Recognition not supported in this browser");
+    return;
+  }
+  
+  if(forceState !== undefined) isListening = !forceState;
+
+  if(!isListening){
+    try {
+      recognition.start();
+      isListening = true;
+      voiceBtn.classList.add("recording");
+      showToast("Listening...");
+    } catch(e) {}
+  } else {
+    recognition.stop();
+    isListening = false;
+    voiceBtn.classList.remove("recording");
+  }
+}
+
+/* Send Message Flow */
 async function sendMessage(){
+  let text = input.value.trim();
+  if(!text && !activeBase64Image) return;
 
-let t=input.value.trim();
+  if(!currentSessionId){
+    createNewSession();
+  }
 
-if(!t)return;
+  hero.style.display = "none";
+  messages.style.display = "block";
 
-hero.style.display="none";
-messages.style.display="block";
+  const attachedImg = activeBase64Image;
+  const userText = text || "Analyze this image";
 
-addMsg(t,true);
+  // Append user message to UI & State
+  appendMessageElement(userText, true, false, attachedImg);
+  
+  sessions[currentSessionId].messages.push({
+    role: "user",
+    content: userText,
+    image: attachedImg
+  });
 
-input.value="";
-resizeBox(input);
+  if(sessions[currentSessionId].messages.length === 1){
+    sessions[currentSessionId].title = userText.slice(0,28) + (userText.length > 28 ? "..." : "");
+  }
 
-sendButton.disabled=true;
+  // Clear inputs
+  input.value = "";
+  resizeBox(input);
+  removeSelectedImage();
+  sendButton.disabled = true;
 
-let r=addMsg("",false);
+  // Placeholder AI typing element
+  let typingMsgElement = appendMessageElement("", false, true);
 
-r.querySelector(".bubble").innerHTML=
-'<div class="typing"><i></i><i></i><i></i></div>';
+  // Prepare Payload History
+  const historyPayload = sessions[currentSessionId].messages.slice(0, -1).map(m => ({
+    role: m.role === "assistant" ? "model" : "user",
+    parts: [{ text: m.content }]
+  }));
 
-try{
+  try {
+    const response = await fetch(API_URL + "/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: userText,
+        history: historyPayload,
+        image: attachedImg,
+        web_search: isWebSearchActive
+      })
+    });
 
-const response=await fetch(API_URL+"/api/chat",{
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error("Backend returned an invalid response.");
+    }
 
-method:"POST",
+    if (!response.ok) {
+      let errorMessage = data.detail || data.error || "AI request failed.";
+      throw new Error(errorMessage);
+    }
 
-headers:{
-"Content-Type":"application/json"
-},
+    const reply = data.reply || data.response || data.message || data.text || data.output;
 
-body:JSON.stringify({
+    if (!reply) {
+      throw new Error("Gemini returned an empty response.");
+    }
 
-message:t,
+    // Remove typing indicator and render actual response
+    messages.removeChild(typingMsgElement);
+    appendMessageElement(reply, false, false);
 
-history:chatHistory
+    sessions[currentSessionId].messages.push({
+      role: "assistant",
+      content: reply
+    });
 
-})
+    saveSessionsToStorage();
+    renderHistoryList();
 
-});
+  } catch (error) {
+    console.error(error);
+    messages.removeChild(typingMsgElement);
+    appendMessageElement("দুঃখিত, এই মুহূর্তে AI উত্তর দিতে পারছি না।\n\n" + error.message, false, false);
+    showToast("AI connection error");
+  }
 
-let data;
-
-try{
-data=await response.json();
-}catch{
-throw new Error("Backend returned an invalid response.");
-}
-
-if(!response.ok){
-
-let errorMessage=data.detail || data.error || "AI request failed.";
-
-throw new Error(errorMessage);
-}
-
-const reply=
-data.reply ||
-data.response ||
-data.message ||
-data.text ||
-data.output;
-
-if(!reply){
-
-throw new Error("Gemini returned an empty response.");
-}
-
-r.querySelector(".bubble").textContent=reply;
-
-chatHistory.push({
-role:"user",
-content:t
-});
-
-chatHistory.push({
-role:"assistant",
-content:reply
-});
-
-addHistory(t);
-
-}catch(error){
-
-console.error(error);
-
-r.querySelector(".bubble").textContent=
-"দুঃখিত, এই মুহূর্তে AI উত্তর দিতে পারছে না।\n\n"+error.message;
-
-showToast("AI connection error");
-
-}
-
-sendButton.disabled=false;
-
-input.focus();
-
+  sendButton.disabled = false;
+  input.focus();
 }
 
 function newChat(){
-
-messages.innerHTML="";
-messages.style.display="none";
-
-hero.style.display="block";
-
-input.value="";
-
-resizeBox(input);
-
-chatHistory=[];
-
-showToast("New chat started");
-
+  currentSessionId = null;
+  messages.innerHTML = "";
+  messages.style.display = "none";
+  hero.style.display = "block";
+  input.value = "";
+  resizeBox(input);
+  removeSelectedImage();
+  renderHistoryList();
+  showToast("New chat started");
 }
 
 function picked(e){
-
-if(e.files[0]){
-showToast("Selected: "+e.files[0].name);
+  if(e.files[0]){
+    showToast("Selected: " + e.files[0].name);
+  }
 }
-
-}
-
 </script>
 
 </body>
