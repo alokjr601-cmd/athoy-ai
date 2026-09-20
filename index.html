@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Athoy AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#050711;--border:rgba(255,255,255,.09);--text:#f5f7ff;--muted:#8f96ae;--accent:#7c5cff;--accent2:#19b8ff;--user:#242844}
+body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden}
+.background{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:-2}
+.background:before,.background:after{content:"";position:absolute;border-radius:50%;filter:blur(120px)}
+.background:before{width:500px;height:500px;background:rgba(124,92,255,.20);top:-180px;left:-120px;animation:orb1 10s ease-in-out infinite alternate}
+.background:after{width:450px;height:450px;background:rgba(25,184,255,.14);right:-150px;bottom:-150px;animation:orb2 12s ease-in-out infinite alternate}
+@keyframes orb1{to{transform:translate(150px,100px)}}@keyframes orb2{to{transform:translate(-130px,-90px)}}
+.app{display:flex;height:100vh}
+.sidebar{width:270px;height:100%;background:rgba(7,9,20,.78);backdrop-filter:blur(25px);border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;transition:.35s}
+.logo{display:flex;align-items:center;gap:12px;padding:8px 6px 25px}
+.logo-icon{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:800;box-shadow:0 0 30px rgba(124,92,255,.35);animation:logoPulse 3s ease-in-out infinite}
+@keyframes logoPulse{50%{box-shadow:0 0 40px rgba(25,184,255,.38)}}
+.logo-name{font-size:20px;font-weight:750}
+.new-chat{width:100%;border:1px solid rgba(255,255,255,.1);background:linear-gradient(135deg,rgba(124,92,255,.22),rgba(25,184,255,.12));color:white;padding:13px;border-radius:14px;cursor:pointer;font-weight:650;transition:.25s}
+.new-chat:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.history-title{color:var(--muted);font-size:11px;letter-spacing:1.5px;margin:27px 8px 10px}
+.history-item{padding:12px;border-radius:12px;color:#c8ccda;font-size:13px;cursor:pointer;margin-bottom:4px;transition:.2s}
+.history-item:hover{background:rgba(255,255,255,.06);color:white}
+.sidebar-bottom{margin-top:auto}.sidebar-button{width:100%;padding:12px;background:transparent;border:0;color:#aeb4c8;border-radius:12px;text-align:left;cursor:pointer}.sidebar-button:hover{background:rgba(255,255,255,.05);color:white}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:72px;border-bottom:1px solid var(--border);background:rgba(5,7,17,.42);backdrop-filter:blur(22px);display:flex;align-items:center;justify-content:space-between;padding:0 25px}
+.model{display:flex;align-items:center;gap:10px;font-weight:650}.status{width:8px;height:8px;border-radius:50%;background:#39e58c;box-shadow:0 0 12px #39e58c;animation:statusPulse 2s infinite}
+@keyframes statusPulse{50%{opacity:.4}}
+.top-actions{display:flex;gap:8px}.icon-btn{width:40px;height:40px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.035);color:#cbd0df;cursor:pointer;font-size:17px;transition:.25s}.icon-btn:hover{background:rgba(255,255,255,.08);color:white}
+.chat{flex:1;overflow-y:auto;padding:40px 20px 160px}.chat-inner{max-width:900px;margin:auto}
+.welcome{text-align:center;padding-top:8vh;animation:fadeUp .8s ease}@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.ai-orb{width:78px;height:78px;margin:auto;border-radius:26px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:34px;box-shadow:0 0 35px rgba(124,92,255,.35);animation:float 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.welcome h1{font-size:clamp(30px,5vw,48px);margin-top:25px;letter-spacing:-1.8px;background:linear-gradient(90deg,#fff,#a9b9ff,#7ce7ff);-webkit-background-clip:text;color:transparent}
+.welcome p{margin-top:12px;color:var(--muted);font-size:14px}
+.suggestions{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:650px;margin:35px auto}.suggestion{padding:16px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.035);text-align:left;color:#cdd2e1;cursor:pointer;transition:.25s}.suggestion:hover{transform:translateY(-3px);background:rgba(255,255,255,.065);border-color:rgba(124,92,255,.3)}
+.message{display:flex;gap:13px;margin-bottom:26px;animation:messageIn .35s ease}@keyframes messageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.avatar{min-width:38px;height:38px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}.ai-avatar{background:linear-gradient(135deg,var(--accent),var(--accent2))}.user-avatar{background:#303650}
+.message-content{line-height:1.7;font-size:14px;max-width:760px;padding-top:5px}.user-message .message-content{background:var(--user);padding:12px 16px;border-radius:4px 16px 16px 16px}
+.composer-wrap{position:absolute;bottom:0;left:270px;right:0;padding:20px 20px 24px;background:linear-gradient(transparent,rgba(5,7,17,.95) 30%)}
+.composer{max-width:900px;margin:auto;border:1px solid rgba(255,255,255,.11);background:rgba(17,20,38,.78);backdrop-filter:blur(25px);border-radius:22px;padding:10px;box-shadow:0 20px 60px rgba(0,0,0,.35);transition:.25s}.composer:focus-within{border-color:rgba(124,92,255,.45);box-shadow:0 20px 70px rgba(0,0,0,.4),0 0 35px rgba(124,92,255,.08)}
+.input-row{display:flex;align-items:flex-end;gap:8px}textarea{flex:1;resize:none;min-height:44px;max-height:150px;background:transparent;border:0;outline:0;color:white;font:inherit;padding:12px 8px}textarea::placeholder{color:#777e96}
+.send{width:44px;height:44px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;font-size:18px;cursor:pointer;transition:.25s}.send:hover{transform:scale(1.06);box-shadow:0 8px 30px rgba(124,92,255,.4)}
+.composer-tools{display:flex;gap:5px;padding:4px}.tool{border:0;background:transparent;color:#838ba2;padding:6px 9px;border-radius:9px;cursor:pointer}.tool:hover{color:white;background:rgba(255,255,255,.06)}
+.footer-note{text-align:center;color:#555c72;font-size:10px;margin-top:9px}.mobile-menu{display:none}
+@media(max-width:750px){.sidebar{position:fixed;left:-290px;top:0;z-index:20;box-shadow:20px 0 50px rgba(0,0,0,.4)}.sidebar.open{left:0}.topbar{padding:0 14px;height:64px}.main{width:100%}.composer-wrap{left:0;padding:12px 12px 16px}.chat{padding:25px 14px 145px}.welcome{padding-top:7vh}.welcome h1{font-size:34px}.suggestions{grid-template-columns:1fr}.mobile-menu{display:block}}
+</style>
+</head>
+<body>
+<div class="background"></div>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+<div class="logo"><div class="logo-icon">A</div><div class="logo-name">Athoy AI</div></div>
+<button class="new-chat" onclick="newChat()">＋ New Chat</button>
+<div class="history-title">Recent Chats</div>
+<div class="history-item">✨ Welcome to Athoy AI</div>
+<div class="history-item">💡 New conversation</div>
+<div class="history-item">🚀 Future AI project</div>
+<div class="sidebar-bottom"><button class="sidebar-button">⚙️ Settings</button><button class="sidebar-button">👤 Account</button></div>
+</aside>
+<main class="main">
+<header class="topbar">
+<div class="model"><button class="icon-btn mobile-menu" onclick="toggleSidebar()">☰</button><span class="status"></span>Athoy AI</div>
+<div class="top-actions"><button class="icon-btn">◐</button><button class="icon-btn">•••</button></div>
+</header>
+<section class="chat" id="chat"><div class="chat-inner" id="chatInner">
+<div class="welcome" id="welcome">
+<div class="ai-orb">✦</div>
+<h1>Welcome to Athoy AI</h1>
+<p>Your intelligent, beautiful and powerful AI companion.</p>
+<div class="suggestions">
+<div class="suggestion" onclick="usePrompt('আমাকে একটি নতুন আইডিয়া দাও')">💡 আমাকে একটি নতুন আইডিয়া দাও</div>
+<div class="suggestion" onclick="usePrompt('একটি সুন্দর গল্প লিখে দাও')">✍️ একটি সুন্দর গল্প লিখে দাও</div>
+<div class="suggestion" onclick="usePrompt('আমাকে প্রোগ্রামিং শেখাও')">💻 আমাকে প্রোগ্রামিং শেখাও</div>
+<div class="suggestion" onclick="usePrompt('আজ আমি কী শিখতে পারি?')">🧠 আজ আমি কী শিখতে পারি?</div>
+</div></div></div></section>
+<div class="composer-wrap"><div class="composer">
+<div class="input-row"><button class="tool">📎</button><textarea id="input" rows="1" placeholder="Ask Athoy AI anything..." oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea><button class="tool">🎙️</button><button class="send" onclick="sendMessage()">➤</button></div>
+<div class="composer-tools"><button class="tool">＋ Add files</button><button class="tool">🌐 Web</button><button class="tool">✨ AI Tools</button></div>
+</div><div class="footer-note">Athoy AI can make mistakes. Check important information.</div></div>
+</main></div>
+<script>
+const input=document.getElementById("input"),chatInner=document.getElementById("chatInner");
+function autoResize(el){el.style.height="auto";el.style.height=Math.min(el.scrollHeight,150)+"px"}
+function handleKey(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}}
+function usePrompt(t){input.value=t;autoResize(input);sendMessage()}
+function sendMessage(){const text=input.value.trim();if(!text)return;const w=document.getElementById("welcome");if(w)w.remove();addMessage(text,"user");input.value="";input.style.height="44px";setTimeout(showTyping,350);setTimeout(()=>{removeTyping();addMessage("আমি Athoy AI-এর বর্তমান interface-এর demo response দিচ্ছি। আসল AI model/API এখনো সংযুক্ত করা হয়নি। পরের ধাপে backend যুক্ত হলে আমি সত্যিকারের AI response দিতে পারব। 🚀","ai")},1500)}
+function addMessage(text,type){const m=document.createElement("div");m.className="message "+(type==="user"?"user-message":"ai-message");m.innerHTML=`<div class="avatar ${type==="user"?"user-avatar":"ai-avatar"}">${type==="user"?"U":"✦"}</div><div class="message-content">${escapeHTML(text)}</div>`;chatInner.appendChild(m);document.getElementById("chat").scrollTo({top:document.getElementById("chat").scrollHeight,behavior:"smooth"})}
+function showTyping(){const t=document.createElement("div");t.id="typing";t.className="message ai-message";t.innerHTML=`<div class="avatar ai-avatar">✦</div><div class="message-content">● ● ●</div>`;chatInner.appendChild(t)}
+function removeTyping(){const t=document.getElementById("typing");if(t)t.remove()}
+function escapeHTML(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function newChat(){location.reload()}function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+</script>
+</body>
+</html>
